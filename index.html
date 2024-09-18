@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Custo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .resultado-container {
+            margin-top: 16px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: #fafafa;
+        }
+
+        .resultado-texto {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="resultado" class="resultado-container" style="display: none;">
+            <div class="resultado-texto" id="resultadoTexto"></div>
+        </div>
+        
+        <label class="label" for="comprimento">Comprimento (metros):</label>
+        <input class="input" type="number" id="comprimento" step="0.5" min="0" placeholder="Digite o Comprimento em Metros:">
+
+        <label class="label" for="largura">Largura (metros):</label>
+        <input class="input" type="number" id="largura" step="0.5" min="0" placeholder="Digite a largura em Metros:">
+
+        <label class="label" for="espessura">Espessura (centímetros):</label>
+        <input class="input" type="number" id="espessura" step="0.5" min="0"placeholder="Digite a espessura em Centímetros:">
+
+        <button class="button" onclick="calcularDados()">Calcular</button>
+    </div>
+
+    <script>
+        function converterParaNumero(valor) {
+            if (valor) {
+                return parseFloat(valor.replace(',', '.'));
+            }
+            return NaN;
+        }
+
+        function calcularDados() {
+            // Obter valores dos inputs
+            const comprimento = document.getElementById('comprimento').value;
+            const largura = document.getElementById('largura').value;
+            const espessura = document.getElementById('espessura').value;
+
+            // Converter os valores dos inputs para números
+            const comprimentoNum = converterParaNumero(comprimento);
+            const larguraNum = converterParaNumero(largura);
+            const espessuraNum = converterParaNumero(espessura);
+
+            // Verificar se os valores são números válidos
+            if (isNaN(comprimentoNum) || isNaN(larguraNum) || isNaN(espessuraNum)) {
+                alert('Por favor, insira valores numéricos válidos com ponto ou vírgula.');
+                return;
+            }
+
+            // Cálculos conforme as fórmulas fornecidas
+            const x = comprimentoNum * larguraNum * (espessuraNum / 100);
+            const ct = x * 235;
+            const p = ct * 1.7;
+
+            // Exibir resultado
+            const resultadoContainer = document.getElementById('resultado');
+            const resultadoTexto = document.getElementById('resultadoTexto');
+            resultadoTexto.textContent = `R$ ${p.toFixed(2)}`;
+            resultadoContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
