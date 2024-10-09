@@ -10,11 +10,37 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column-reverse;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
         }
+        .adjust {
+            background-color: #ffffff;
+            width: 10%;
+            height: 10%;
+            border-radius: 8px;
+            margin: 3%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .inputcl{
+            background-color: #ffffff;
+            width: 40%;
+            height: 40%;
+            border-radius: 8px;
+            margin: 3%;
+        }
+
+        .labelcl{
+            font-size: 13px;
+            display: block;
+        }
+
 
         .container {
             background-color: #ffffff;
@@ -71,9 +97,9 @@
 <body>
     <div class="container">
         <div id="resultado" class="resultado-container" style="display: none;">
-            <div class="resultado-texto" id="resultadoTexto"></div>
+            <div class="resultado-total" id="resultadoTotal"></div>
+            <div class="resultado-unid" id="resultadoUnid"></div>
         </div>
-        
         <label class="label" for="comprimento">Comprimento (metros):</label>
         <input class="input" type="number" id="comprimento" step="0.5" min="0" placeholder="Digite o Comprimento em Metros:">
 
@@ -83,7 +109,15 @@
         <label class="label" for="espessura">Espessura (centímetros):</label>
         <input class="input" type="number" id="espessura" step="0.5" min="0"placeholder="Digite a espessura em Centímetros:">
 
+        <label class="label" for="quantidade">Quantidade:</label>
+        <input class="input" type="number" id="quantidade" step="1" min="1" placeholder="Digite a Quantidade de Peças: ">
+
         <button class="button" onclick="calcularDados()">Calcular</button>
+    </div>
+
+    <div class="adjust">
+        <label class="labelcl" for="cl" style="text-align: center;">Coeficiente de Lucro</label>
+        <input class="inputcl" type="number" id="cl" value="1.7" step="0.1">
     </div>
 
     <script>
@@ -99,28 +133,33 @@
             const comprimento = document.getElementById('comprimento').value;
             const largura = document.getElementById('largura').value;
             const espessura = document.getElementById('espessura').value;
+            const quantidade = document.getElementById('quantidade').value;
 
             // Converter os valores dos inputs para números
             const comprimentoNum = converterParaNumero(comprimento);
             const larguraNum = converterParaNumero(largura);
-            const espessuraNum = converterParaNumero(espessura);
+            const espessuraNum = converterParaNumero(espessura)
 
-            // Verificar se os valores são números válidos
-            if (isNaN(comprimentoNum) || isNaN(larguraNum) || isNaN(espessuraNum)) {
-                alert('Por favor, insira valores numéricos válidos com ponto ou vírgula.');
+            if(comprimento == "" || largura == "" || espessura == "" || quantidade == "") {
+                alert('Você deixou campos em branco, preencha todos os campos.')
                 return;
             }
+
+            var cl = document.getElementById('cl').value; 
 
             // Cálculos conforme as fórmulas fornecidas
             const x = comprimentoNum * larguraNum * (espessuraNum / 100);
             const ct = x * 250;
-            const p = ct * 1.7;
-
+            const p = ct * cl;
+            const tt = p * quantidade
             // Exibir resultado
             const resultadoContainer = document.getElementById('resultado');
-            const resultadoTexto = document.getElementById('resultadoTexto');
-            resultadoTexto.textContent = `R$ ${p.toFixed(2)}`;
-            resultadoContainer.style.display = 'block';
+            const resultadoTotal = document.getElementById('resultadoTotal');
+            const resultadoUnid = document.getElementById('resultadoUnid');
+            resultadoTotal.textContent = `Valor total: R$ ${tt.toFixed(2)}`;
+            resultadoUnid.textContent = `Valor da Unidade: R$ ${p.toFixed(2)}`;
+            resultadoContainer.style.display = 'block'; 
+            
         }
     </script>
 </body>
